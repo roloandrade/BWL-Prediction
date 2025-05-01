@@ -12,6 +12,17 @@ st.title("Bodyweight Loss Prediction")
 
 st.markdown("Please complete all the following basal information for a correct prediction")
 
+# Función para obtener entrada validada
+def get_float_input(label):
+    value = st.text_input(label)
+    if value:
+        try:
+            return float(value)
+        except ValueError:
+            st.error(f"{label} debe ser un número válido.")
+    return None
+
+
 # Entradas de usuario
 
 dbp = st.number_input("Diastolic Blood Pressure", min_value=10, max_value=200) 
@@ -32,23 +43,28 @@ bilirubin = st.number_input("Bilirunin", min_value=0.0, max_value=250.0, step=0.
 
 # Botón para predecir
 if st.button("Predecir"):
-    try:
-        input_data = np.array([[dbp, age, ldlch, musclemass, homa_ir, insuline, sbp,
-                                intra_water, metrate, body_cell_mass, bodyweight, pcr,
-                                waist_circumference, num_cig, bilirubin]])
-        
-        # Escalar los datos
-        input_scaled = scaler.transform(input_data)
+    inputs = [dbp, age, ldlch, musclemass, homa_ir, insuline, sbp, intra_water,
+              metrate, body_cell_mass, bodyweight, pcr, waist_circumference,
+              num_cig, bilirubin]
 
-        # PCA
-        input_pca = pca.transform(input_scaled)
+    if None in inputs:
+        st.warning("Por favor, completa todos los campos con valores numéricos.")
+    else:
+        # Crear dataframe y escalar
+        df_input = pd.DataFrame([inputs], columns=[
+            'DBP', 'Age', 'LDLCH', 'MUSCLEMASS', 'HOMAIR', 'INSULINE', 'SBP',
+            'INTRAWATER', 'METRATE', 'BODYCELLMASS', 'BODYWEIGHT', 'PCR',
+            'WAIST_CIRCUMFERENCE', 'NUM_CIG', 'BILIRUBIN'
+        ])
+        df_scaled = scaler.transform(df_input)
 
-        # Predicción
-        resultado = modelo.predict(input_pca)[0]
+        # Predecir
+        pred = modelo.predict(df_scaled)[0]
+        proba = modelo.predict_proba(df_scaled)[0][1]
 
-        if resultado == 1:
-            st.success(f"✅ Predicción: Éxito en la pérdida de peso")
+        if pred == 1:
+        st.success(f"Predicción: Éxito en la pérdida de peso")
         else:
-            st.warning(f"❌ Predicción: No se espera éxito")
-    except Exception as e:
-        st.error(f"Ocurrió un error al predecir: {str(e)}")
+        st.error(f"Predicción: Fracaso en la pérdida de peso")
+
+
