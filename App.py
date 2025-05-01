@@ -63,8 +63,8 @@ if st.button("Predecir"):
         proba = modelo.predict_proba(df_scaled)[0][1]
 
         if pred == 1:
-        st.success(f"Predicción: Éxito en la pérdida de peso")
+            st.success(f"Predicción: Éxito en la pérdida de peso")
         else:
-        st.error(f"Predicción: Fracaso en la pérdida de peso")
+            st.error(f"Predicción: Fracaso en la pérdida de peso")
 
 
