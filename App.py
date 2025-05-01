@@ -52,9 +52,9 @@ if st.button("Predecir"):
     else:
         # Crear dataframe y escalar
         df_input = pd.DataFrame([inputs], columns=[
-            'DBP', 'Age', 'LDLCH', 'MUSCLEMASS', 'HOMAIR', 'INSULINE', 'SBP',
-            'INTRAWATER', 'METRATE', 'BODYCELLMASS', 'BODYWEIGHT', 'PCR',
-            'WAIST_CIRCUMFERENCE', 'NUM_CIG', 'BILIRUBIN'
+            'dbp', 'age', 'ldlch', 'musclemass', 'homa_ir', 'insuline', 'sbp',
+                                'intra_water', 'metrate', 'body_cell_mass', 'bodyweight', 'pcr',
+                                'waist_circumference', 'num_cig', 'bilirubin'
         ])
         df_scaled = scaler.transform(df_input)
 
