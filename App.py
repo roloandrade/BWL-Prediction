@@ -8,9 +8,9 @@ modelo = joblib.load("stacking_model(1).pkl")
 pca = joblib.load("pca_model(1).pkl")
 scaler = joblib.load("scaler(1).pkl")
 
-st.title("Predicción de Éxito en Pérdida de Peso")
+st.title("Bodyweight Loss Prediction")
 
-st.markdown("Introduce las variables basales del paciente para obtener la predicción.")
+st.markdown("Please complete all the following basal information for a correct prediction")
 
 # Entradas de usuario
 
