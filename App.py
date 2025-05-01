@@ -4,9 +4,9 @@ import numpy as np
 import joblib
 
 # Cargar modelos y transformaciones
-modelo = joblib.load("stacking_model.pkl")
-pca = joblib.load("pca_model.pkl")
-scaler = joblib.load("scaler.pkl")
+modelo = joblib.load("stacking_model(1).pkl")
+pca = joblib.load("pca_model(1).pkl")
+scaler = joblib.load("scaler(1).pkl")
 
 st.title("Predicción de Éxito en Pérdida de Peso")
 
