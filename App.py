@@ -41,30 +41,26 @@ waist_circumference = st.number_input("Waist Circumference", min_value=1.0, max_
 num_cig = st.number_input("Number of cigarettes per day", min_value=0, max_value=100) 
 bilirubin = st.number_input("Bilirunin", min_value=0.0, max_value=250.0, step=0.1) 
 
+
 # Botón para predecir
 if st.button("Predecir"):
-    inputs = [dbp, age, ldlch, musclemass, homa_ir, insuline, sbp, intra_water,
-              metrate, body_cell_mass, bodyweight, pcr, waist_circumference,
-              num_cig, bilirubin]
+    try:
+        input_data = np.array([[dbp, age, ldlch, musclemass, homa_ir, insuline, sbp,
+                                intra_water, metrate, body_cell_mass, bodyweight, pcr,
+                                waist_circumference, num_cig, bilirubin]])
+        
+        # Escalar los datos
+        input_scaled = scaler.transform(input_data)
 
-    if None in inputs:
-        st.warning("Por favor, completa todos los campos con valores numéricos.")
-    else:
-        # Crear dataframe y escalar
-        df_input = pd.DataFrame([inputs], columns=[
-            'dbp', 'age', 'ldlch', 'musclemass', 'homa_ir', 'insuline', 'sbp',
-                                'intra_water', 'metrate', 'body_cell_mass', 'bodyweight', 'pcr',
-                                'waist_circumference', 'num_cig', 'bilirubin'
-        ])
-        df_scaled = scaler.transform(df_input)
+        # PCA
+        input_pca = pca.transform(input_scaled)
 
-        # Predecir
-        pred = modelo.predict(df_scaled)[0]
-        proba = modelo.predict_proba(df_scaled)[0][1]
+        # Predicción
+        resultado = modelo.predict(input_pca)[0]
 
-        if pred == 1:
-            st.success(f"Predicción: Éxito en la pérdida de peso")
+        if resultado == 1:
+            st.success(f"✅ Predicción: Éxito en la pérdida de peso")
         else:
-            st.error(f"Predicción: Fracaso en la pérdida de peso")
-
-
+            st.warning(f"❌ Predicción: No se espera éxito")
+    except Exception as e:
+        st.error(f"Ocurrió un error al predecir: {str(e)}")
